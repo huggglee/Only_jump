@@ -3,7 +3,7 @@
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
-    public float jumpForce = 4f;
+    public float jumpForce = 5f;
     public float moveSpeed = 2f;
     private int direction = 0;
     void Start()
@@ -38,9 +38,16 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Finish"))
         {
             Debug.Log("you win");
-            rb.bodyType = RigidbodyType2D.Kinematic;
             rb.linearVelocity = Vector2.one;
-
+            LevelManager.instance.LoadNextLevel();
+        } else if (collision.gameObject.CompareTag("Mattress"))
+        {
+            transform.position = collision.gameObject.transform.position;
+            float angle = collision.gameObject.transform.eulerAngles.z* Mathf.Deg2Rad;
+            Debug.Log(angle);
+            //Vector2 jumpForce = new Vector2(0, 3.5f);
+            //rb.AddForce(jumpForce, ForceMode2D.Impulse);
+            rb.linearVelocity = new Vector2(6f*Mathf.Cos(angle), 12f* Mathf.Sin(angle));
         }
     }
 
